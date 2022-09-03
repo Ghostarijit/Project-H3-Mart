@@ -1,10 +1,10 @@
 const productModel = require("../model/productModel");
-//const internModel = require("../model/internModel");
+
 
 var reader = require('xlsx');
 const { json } = require("body-parser");
 
-// Reading our test file
+// Reading our file
 var file = reader.readFile("../product_list.xlsx")
 
 
@@ -28,7 +28,7 @@ const createProduct = async function (req, res) {
         let createdProduct = await productModel.insertMany(dataa)
 
 
-        return res.send({ createdProduct })
+        return res.sdtatus(201).send({status: true ,msg: createdProduct })
 
 
      } catch (err) {
@@ -52,7 +52,7 @@ const updatePrice = async function (req, res) {
 
         }, { new: true })
 
-        return res.status(500).send({ status: true, msg: `price Update Successfull this ${updatePrice.product_code} and productId is ${updatePrice._id}` })
+        return res.status(201).send({ status: true, msg: `price Update Successfull this ${updatePrice.product_code} and productId is ${updatePrice._id}` })
 
     } catch (err) {
 
@@ -76,7 +76,7 @@ const GetProductWithPrice = async function (req, res) {
             price: Price.price
         }
 
-        return res.status(500).send({ status: true, msg: Doc })
+        return res.status(201).send({ status: true, msg: Doc })
 
     } catch (err) {
 
@@ -111,7 +111,7 @@ const GetXL = async function (req, res) {
 
         // Writing to our file
         reader.writeFile(file, './product_list.xlsx')
-        return res.send({ msg: product })
+        return res.status(201).send({status:true, msg: product })
 
     } catch (err) {
 
