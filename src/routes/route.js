@@ -1,13 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const collegeControllers = require("../controllers/collegeController");
-const internControllers = require("../controllers/internController");
+const productControllers = require("../controllers/productController");
+//const internControllers = require("../controllers/internController");
 
 
 
-router.post("/colleges", collegeControllers.createCollege);
-router.post("/interns", internControllers.createIntern);
-router.get('/collegeDetails',collegeControllers.getCollegeDetails)
+;
+router.post("/createProduct", productControllers.createProduct)
+router.put("/updatePrice", productControllers.updatePrice)
+router.get("/api.storerestapi.com/products/:product_id", productControllers.GetProductWithPrice);
+router.get("/ProductPriceInXL", productControllers.GetXL)
+//router.get('/collegeDetails',collegeControllers.getCollegeDetails)
 
 
 module.exports = router;

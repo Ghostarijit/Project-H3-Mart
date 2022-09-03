@@ -9,13 +9,13 @@ const mongoose = require("mongoose");
 
 mongoose
   .connect(
-    "mongodb+srv://Bhagaban:L2vSe5ZRZjoVfhOA@cluster0.ojbuh.mongodb.net/group90Database",
+    "mongodb+srv://arijit8637:WTqiGxjIFMSg5nxn@cluster0.u6fy9.mongodb.net/project-H3-Mart?retryWrites=true&w=majority",
     { useNewUrlParser: true }
   )
   .then(() => console.log("mongoDB is connected"))
   .catch((err) => console.log(err));
 
-app.use("/functionup", router);
+app.use("/", router);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("express running on PORT:", process.env.PORT || 3000);

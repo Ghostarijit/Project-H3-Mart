@@ -3,11 +3,11 @@ const collegeModel = require('../model/collegeModel')
 
 /********************************************************************Create Intern Api*********************************************************/
 
-const createIntern = async function (req, res) {
+const createIntern = async function(req, res) {
 
     try {
 
-        let data = req.body  /*we take Input Here and check all the field and value*/
+        let data = req.body /*we take Input Here and check all the field and value*/
 
         if (!Object.keys(data).length) return res.status(400).send({ status: false, msg: "Please Enter The Intern Details" })
 
@@ -23,37 +23,36 @@ const createIntern = async function (req, res) {
 
         if (data.isDeleted == true) return res.status(400).send({ status: false, msg: "isDeleted cannot be true While Creating a Document" });
 
-        if (!/^(\+\d{1,3}[- ]?)?\d{10}$/.test(data.mobile))   /*validate Mobile Number*/
+        if (!/^(\+\d{1,3}[- ]?)?\d{10}$/.test(data.mobile)) /*validate Mobile Number*/
 
-        return res.status(400).send({ status: false, msg: `${data.mobile} is not a valid mobile number, Please provide a valid mobile number` })
+            return res.status(400).send({ status: false, msg: `${data.mobile} is not a valid mobile number, Please provide a valid mobile number` })
 
-        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/).test(data.email))   /*validate Email ID*/
+        if (!(/^\w+([\.-]?\w+)@\w+([\. -]?\w+)(\.\w{2,3})+$/).test(data.email)) /*validate Email ID*/
 
             return res.status(400).send({ status: false, msg: "email Id is invalid" })
 
-        let numberCheck = await internModel.findOne({ mobile: data.mobile })    /*Check Mobile From DB*/
+        let numberCheck = await internModel.findOne({ mobile: data.mobile }) /*Check Mobile From DB*/
 
         if (numberCheck) return res.status(400).send({ status: false, msg: "Mobile Number Already Used" })
- 
-        let emailCheck = await internModel.findOne({ email: data.email })      /*Check EmailId From DB*/
+
+        let emailCheck = await internModel.findOne({ email: data.email }) /*Check EmailId From DB*/
 
         if (emailCheck) return res.status(400).send({ status: false, msg: "EmailID Already Exists" })
 
-        let CollgeFullName=data.collegeName.trim()        
-        
-        let checkCollege = await collegeModel.findOne({ fullName: CollgeFullName , isDeleted: false }) /*Check College Full Name From DB*/
-         
-        if (!checkCollege) return res.status(400).send({status: false, message:`${CollgeFullName} : No such college Name Not Found!`});
+        let CollgeName = data.collegeName.trim()
 
-        let college_Id = checkCollege._id   /*Get College Id from CheckCollege*/
+        let checkCollege = await collegeModel.findOne({ name: CollgeName, isDeleted: false }) /*Check College Full Name From DB*/
 
-        data.collegeId = college_Id      /*Insert CollegeId in Data Object*/
+        if (!checkCollege) return res.status(400).send({ status: false, message: `${CollgeName} : No such college Name Not Found!` });
 
-        const saveInterData = await internModel.create(data);  /*Create Intern here*/
+        let college_Id = checkCollege._id /*Get College Id from CheckCollege*/
 
-        return res.status(201).send({ status: true, message: `Successfully applied for internship at ${CollgeFullName}.`, data: saveInterData })
-    }
-    catch (err) {
+        data.collegeId = college_Id /*Insert CollegeId in Data Object*/
+
+        const saveInterData = await internModel.create(data); /*Create Intern here*/
+
+        return res.status(201).send({ status: true, message: `Successfully applied for internship at ${CollgeName}.`, data: saveInterData })
+    } catch (err) {
 
         res.status(500).send({ status: false, error: err.message })
     }
