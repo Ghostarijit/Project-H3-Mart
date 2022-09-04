@@ -43,9 +43,12 @@ const updatePrice = async function (req, res) {
     try {
         let price = req.body.price
         let id = req.body.productId
-
-
-
+     
+           let check = await productModel.findOne({_id:id})
+          
+           if (!check) {
+            return res.status(400).send({ status: false, msg: `Product is not Present for Thid Id:${id}` })
+        }
         let updatePrice = await productModel.findOneAndUpdate({ _id: id?.trim() }, {
 
             $set: { price: price }
@@ -107,7 +110,7 @@ const GetXL = async function (req, res) {
         
         const ws = reader.utils.json_to_sheet(arr)
 
-        reader.utils.book_append_sheet(file, ws, "Sheet4")
+        reader.utils.book_append_sheet(file, ws, "Sheet5")
 
         // Writing to our file
         reader.writeFile(file, './product_list.xlsx')
